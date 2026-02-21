@@ -1,0 +1,7 @@
+1. add 14 extra word to finish with congratulation
+2. remove dev configuration of deleting db on create
+3.in manifest for each activity add portrait screen mode lock
+
+4. add db
+done all above
+5. add sound and music

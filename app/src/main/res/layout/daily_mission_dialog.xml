@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog_royal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DAILY MISSION"
+        android:textAlignment="center"
+        android:textColor="#FFD700"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:id="@+id/txtMissionPercent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60%"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtMissionRatio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="6/10"
+            android:textColor="#B0BEC5" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/missionProgress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:progress="60"
+        android:progressDrawable="@drawable/custom_progress_gold"
+        android:layout_marginBottom="24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#1AFFFFFF"
+        android:padding="12dp"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:id="@+id/txtCompleted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Completed: 6 words"
+            android:textColor="#B0BEC5" />
+
+        <TextView
+            android:id="@+id/txtLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Remaining: 4 words"
+            android:textColor="#B0BEC5" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBackMission"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="CONTINUE JOURNEY"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        app:backgroundTint="#FFD700"
+        app:cornerRadius="12dp" />
+
+</LinearLayout>

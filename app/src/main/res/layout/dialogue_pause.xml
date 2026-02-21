@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_dialog_royal"
+    android:orientation="vertical"
+    android:padding="24dp"
+    app:circularflow_defaultRadius="24dp">
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="PAUSED"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnResume"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="12dp"
+        android:elevation="8dp"
+        android:text="RESUME"
+        android:textColor="#02081B"
+        android:textStyle="bold"
+        app:backgroundTint="#02C646"
+        app:cornerRadius="12dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRestart"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="12dp"
+        android:elevation="8dp"
+        android:text="RESTART"
+        android:textColor="#02081B"
+        android:textStyle="bold"
+        app:backgroundTint="#4FACFE"
+        app:cornerRadius="12dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnQuit"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:elevation="8dp"
+        android:text="QUIT"
+        android:textColor="#02081B"
+        android:textStyle="bold"
+        app:backgroundTint="#E1001A"
+        app:cornerRadius="12dp" />
+
+</LinearLayout>

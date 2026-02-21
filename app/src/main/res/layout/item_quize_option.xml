@@ -1,0 +1,29 @@
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/optionCard"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_margin="0dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardPreventCornerOverlap="false">
+
+    <RelativeLayout
+        android:id="@+id/optionBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_option_cyan_grad">
+
+        <TextView
+            android:id="@+id/tvOptionArabic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="صديق"
+            android:textColor="#02081B"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
