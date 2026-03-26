@@ -1,0 +1,45 @@
+<resources>
+
+    <style name="Widget.Theme.HafizQ.MyView" parent="">
+        <item name="android:background">@color/gray_600</item>
+    </style>
+    <!-- Base style (shared properties) -->
+    <style name="QuizButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="strokeWidth">5dp</item>
+    </style>
+
+    <!-- Red -->
+    <style name="QuizButton.Red">
+        <item name="android:backgroundTint">#2A0000</item>
+        <item name="android:textColor">#F6BABA</item>
+        <item name="strokeColor">#E50303</item>
+    </style>
+
+    <!-- Yellow -->
+    <style name="QuizButton.Yellow">
+        <item name="android:backgroundTint">#2A2300</item>
+        <item name="android:textColor">#F6EEBA</item>
+        <item name="strokeColor">#E5B403</item>
+    </style>
+
+    <!-- Blue -->
+    <style name="QuizButton.Blue">
+        <item name="android:backgroundTint">@color/ic_launcher_background</item>
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="strokeColor">@color/light_blue_600</item>
+    </style>
+
+    <!-- Green (from before) -->
+    <style name="QuizButton.Green">
+        <item name="android:backgroundTint">#002A00</item>
+        <item name="android:textColor">#BAF6BB</item>
+        <item name="strokeColor">#0BE503</item>
+    </style>
+</resources>

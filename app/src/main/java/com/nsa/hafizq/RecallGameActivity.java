@@ -3,20 +3,28 @@ package com.nsa.hafizq;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.core.graphics.Insets;
@@ -30,14 +38,18 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class RecallGameActivity extends BaseActivity {
     private final ExecutorService databaseExecutor = Executors.newSingleThreadExecutor();
-
+    private SoundPool soundPool;
+    private int nextSound, correctSound;
+    private  int wrongSound;
     private LinkedList<WordModel> activeWords = new LinkedList<>();
+//    private MediaPlayer backgroundMusic;
 //    private int currentScore = 0;
     private int lives = 5;
     private int timeLeft = 10; // Seconds
@@ -56,7 +68,8 @@ public class RecallGameActivity extends BaseActivity {
     private int length = -1;
     private  int score = 0;
     private ImageButton[] lifeIcons;
-
+    private TextToSpeech tts;
+    private boolean isTtsReady = false;
     // Database
     private ManageDatabase myDB;
 
@@ -80,6 +93,31 @@ public class RecallGameActivity extends BaseActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+//        backgroundMusic = MediaPlayer.create(this, R.raw.nasheed);
+//        backgroundMusic.setLooping(true);
+//        // (0.0 to 1.0 range)
+//        backgroundMusic.setVolume(0.5f, 0.5f);
+//        // Start playing
+//        backgroundMusic.start();
+
+        // Standard SoundPool Initialization
+        AudioAttributes attrs = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setMaxStreams(3) // Allow up to 3 sounds to play at the exact same time
+                .setAudioAttributes(attrs)
+                .build();
+
+
+        // Load all three sounds from your res/raw folder
+//        nextSound = soundPool.load(this, R.raw.next, 1);
+//        correctSound = soundPool.load(this, R.raw.correct_10, 1);
+        wrongSound = soundPool.load(this, R.raw.wrong_slap, 1);
+
         lifeIcons = new ImageButton[]{
                 findViewById(R.id.live5),
                 findViewById(R.id.live4), // Note: Fixed your missing '4' from XML
@@ -87,22 +125,25 @@ public class RecallGameActivity extends BaseActivity {
                 findViewById(R.id.live2),
                 findViewById(R.id.live1)
         };
+
         myDB = new ManageDatabase(this);
         databaseExecutor.execute(() -> {
-            // 1. Do the work (The "Await" part)
-            loadInitialWords();
-            // 2. Only when finished, tell the UI thread to update
-            runOnUiThread(() -> {
-                ((TextView)findViewById(R.id.hScore)).setText("Highest score: " + highestScore);
-//                    nextLayout();
-                    nextQuestion();
+            loadInitialWords(); // 1. Wait for DB
 
+            // 2. Start TTS and pass the "Next Step" as a Runnable
+            initTTS(() -> {
+                // This ONLY runs once DB is done AND TTS is Success
+                ((TextView)findViewById(R.id.hScore)).setText("Highest score: " + highestScore);
+                nextQuestion();
             });
         });
+
+
         // Show first question
 
 
         findViewById(R.id.next).setOnClickListener(v -> {
+//            soundPool.play(nextSound, 1, 1, 0, 0, 1);
             // Only increment when moving to the next card
             if (track < length) {
                 track++;
@@ -160,6 +201,13 @@ public class RecallGameActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         isPaused = true; // Timer runnable will skip its next execution
+//        if (backgroundMusic != null && backgroundMusic.isPlaying()) {
+//            backgroundMusic.pause();
+//        }
+        if (tts != null) {
+            // Stop speaking immediately when the user leaves the screen
+            tts.stop();
+        }
 
     }
 
@@ -170,13 +218,37 @@ public class RecallGameActivity extends BaseActivity {
             isPaused = false;
 //            timerHandler.postDelayed(timerRunnable, 1000); // Resume
         }
+//        if (backgroundMusic != null) {
+//            backgroundMusic.start();
+//        }
+        // If tts was destroyed or null, re-initialize it
+        if (tts == null) {
+            initTTS();
+        }
     }
 
     @Override
     protected void onDestroy() {
         stopTimer();
-//        databaseExecutor.shutdown();
+        databaseExecutor.shutdown();
         super.onDestroy();
+        // 5. Clean up memory
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+        }
+        // VERY IMPORTANT: Release resources
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+            isTtsReady = false;
+        }
+
+//        if (backgroundMusic != null) {
+//            backgroundMusic.stop();
+//            backgroundMusic.release();
+//            backgroundMusic = null;
+//        }
     }
     private void startTimer() {
         stopTimer();
@@ -254,6 +326,11 @@ public class RecallGameActivity extends BaseActivity {
     }
     private void decreaseLife() {
         if (lives > 0) {
+            // doublee sound problem solved i gueww now i have run to check
+            if(!sound){
+                soundPool.play(wrongSound, 1, 1, 0, 0, 1);
+            }
+
             int iconIndex = lives - 1;
 
             // 1. Visual feedback on the heart
@@ -332,7 +409,7 @@ public class RecallGameActivity extends BaseActivity {
         // 1. Get the last ID the user was at from SETTINGS table
         int startId = myDB.getLastStartingWordId();
 
-        // 2. Fetch the first 5 words to start the game
+        // 2. Fetch the first 4 words to start the game
         Cursor cursor = myDB.getFourWordsFromId(startId);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -439,7 +516,9 @@ public class RecallGameActivity extends BaseActivity {
     }
 
     private void nextQuestion() {
-
+        if (tts != null) {
+            tts.stop();
+        }
         //track
         //db update
         //layout change
@@ -502,7 +581,7 @@ public class RecallGameActivity extends BaseActivity {
         }
 
         if(isQuize){
-            startTimer();
+
             //change ui per click meaning add new quize
             FrameLayout layoutBangla1 = findViewById(R.id.containerBangla1);
             FrameLayout layoutArabic1 = findViewById(R.id.containerArabic1);
@@ -579,7 +658,10 @@ public class RecallGameActivity extends BaseActivity {
             newArabic1.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
             newArabic2.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
             newArabic3.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
-            newArabic4.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
+            newArabic4.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).withEndAction(() -> {
+               // generateAndSpeak(activeWords.get(track).bangla, "bn", false);
+                startTimer();
+            }).start();
 
             findViewById(R.id.next).setEnabled(false);
 //            if (track < (int)length) {6
@@ -613,6 +695,18 @@ public class RecallGameActivity extends BaseActivity {
             // 3. Create NEW cards
             View newBangla = getLayoutInflater().inflate(R.layout.item_quiz_card, null);
             View newArabic = getLayoutInflater().inflate(R.layout.item_quiz_card, null);
+            newBangla.findViewById(R.id.speak_text_card).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    generateAndSpeak(data.bangla, "bn", false);
+                }
+            });
+            newArabic.findViewById(R.id.speak_text_card).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                     generateAndSpeak(data.arabic, "ar", false);
+                }
+            });
 
             // Set Text
             ((TextView)newBangla.findViewById(R.id.tvWord)).setText(data.bangla);
@@ -632,7 +726,13 @@ public class RecallGameActivity extends BaseActivity {
 
             // 4. Animate NEW cards in (Slide from right)
             newBangla.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
-            newArabic.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
+            newArabic.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).withEndAction(() -> {
+                // 1. Speak Bangla immediately (clears any old audio)
+//                generateAndSpeak(data.bangla, "bn", false);
+
+                // 2. Queue Arabic (waits for Bangla to finish)
+//                generateAndSpeak(data.arabic, "ar", true);
+            }).start();
 
 
 
@@ -645,6 +745,8 @@ public class RecallGameActivity extends BaseActivity {
 
     public void checkAnswer(View ansCard){
         if( 9 == track && ((TextView)ansCard.findViewById(R.id.tvOptionArabic)).getText().toString().equals(activeWords.get(track).arabic)){
+            generateAndSpeak(activeWords.get(track).arabic, "ar", false);
+//            soundPool.play(correctSound, 1, 1, 0, 0, 1);
             ansCard.findViewById(R.id.optionBackground).setBackgroundResource(R.drawable.bg_option_gold_grad);
             completedDailyMission++;
             ((TextView)findViewById(R.id.totalWordCount)).setText("Words: "+completedDailyMission);
@@ -677,6 +779,8 @@ public class RecallGameActivity extends BaseActivity {
             findViewById(R.id.next).setEnabled(true);
             stopTimer();
         }else if(((TextView)ansCard.findViewById(R.id.tvOptionArabic)).getText().toString().equals(activeWords.get(track).arabic)){
+            generateAndSpeak(activeWords.get(track).arabic, "ar", false);
+//            soundPool.play(correctSound, 1, 1, 0, 0, 1);
             ansCard.findViewById(R.id.optionBackground).setBackgroundResource(R.drawable.bg_option_green_grad);
             score++;
             ((TextView)findViewById(R.id.scoreCount)).setText("Score: "+score);
@@ -703,6 +807,7 @@ public class RecallGameActivity extends BaseActivity {
             findViewById(R.id.next).setEnabled(true);
             stopTimer();
         }else{
+            //generateAndSpeak(((TextView)ansCard.findViewById(R.id.tvOptionArabic)).getText().toString(), "ar", false);
             ansCard.findViewById(R.id.optionBackground).setBackgroundResource(R.drawable.bg_option_red_grad);
             ansCard.setEnabled(false);
             ansCard.setClickable(false);
@@ -740,6 +845,69 @@ public class RecallGameActivity extends BaseActivity {
         motherLayout.addView(newChildLayout);
         // 4. Animate NEW cards in (Slide from right)
         newChildLayout.animate().translationX(0f).setDuration(duration).setInterpolator(new DecelerateInterpolator()).start();
+    }
+    // Initialize this in your onCreate or onViewCreated
+    private void initTTS() {
+        tts = new TextToSpeech(RecallGameActivity.this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                isTtsReady = true;
+            } else {
+                Log.e("TTS", "Initialization failed");
+            }
+        });
+    }
+    private void initTTS(Runnable onReady) {
+        tts = new TextToSpeech(RecallGameActivity.this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                isTtsReady = true;
+//                tts.setSpeechRate(0.8f);
+                // NOW the engine is truly ready. Tell the UI to start!
+                runOnUiThread(onReady);
+            }else{
+                Log.e("TTS", "Initialization failed");
+            }
+        });
+    }
+
+    public void generateAndSpeak(String text, String langCode, boolean isQueued) {
+        if(!sound){
+            return;
+        }
+        if (!isTtsReady || tts == null) {
+            Toast.makeText(RecallGameActivity.this, "TTS not ready yet", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Locale locale;
+        switch (langCode.toLowerCase()) {
+            case "bn":
+                locale = new Locale("bn", "BD");
+                break;
+            case "ar":
+                locale = new Locale("ar");
+                break;
+            case "en":
+            default:
+                locale = Locale.US;
+                break;
+        }
+
+        int result = tts.setLanguage(locale);
+
+        if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+
+            Toast.makeText(RecallGameActivity.this, "Language data missing. Please download it in Android Settings.", Toast.LENGTH_LONG).show();
+            // This means the user needs to download the voice pack
+            Intent installIntent = new Intent();
+            installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
+            startActivity(installIntent);
+        } else {
+            // QUEUE_FLUSH stops any current speech and starts the new one immediately
+            // Use QUEUE_ADD if isQueued is true, otherwise use QUEUE_FLUSH
+            int queueMode = isQueued ? TextToSpeech.QUEUE_ADD : TextToSpeech.QUEUE_FLUSH;
+
+            tts.speak(text, queueMode, null, "ID_" + text.hashCode());
+        }
     }
 
     private void showPauseMenu() {
@@ -887,7 +1055,35 @@ public class RecallGameActivity extends BaseActivity {
             });
             // Add code here to pause/play your MediaPlayer
         });
+// 1. Find the Dropdown inside the dialogView
+        AutoCompleteTextView dropdown = dialogView.findViewById(R.id.dropdownLearnSound);
 
+// 2. Define your options
+        String[] options = {"Always", "New Words", "Off"};
+
+// 3. Create the Adapter (Context must be 'this' or 'RecallGameActivity.this')
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                RecallGameActivity.this,
+                android.R.layout.simple_list_item_1,
+                options
+        );
+
+// 4. Attach the adapter to the dropdown
+        dropdown.setAdapter(adapter);
+
+// 5. Set the initial text (from your database/variable)
+// For example: dropdown.setText(learnSoundMode, false);
+
+// 6. Handle the selection
+        dropdown.setOnItemClickListener((parent, view, position, id) -> {
+            String selectedMode = (String) parent.getItemAtPosition(position);
+
+            // Save to your variable/database
+            // learnSoundMode = selectedMode;
+//            databaseExecutor.execute(() -> {
+////                myDB.updateLearnSoundSetting(selectedMode);
+//            });
+        });
         dialogView.findViewById(R.id.btnCloseSettings).setOnClickListener(v -> {
             dialog.dismiss();
             isPaused = false;

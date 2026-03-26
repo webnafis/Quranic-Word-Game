@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/optionCard"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="match_parent"
     android:layout_margin="0dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp"

@@ -9,6 +9,8 @@ activity = "1.12.3"
 constraintlayout = "2.2.1"
 cardview = "1.0.0"
 viewpager2 = "1.1.0"
+fragment = "1.8.9"
+#cardviewV7 = "28.0.0"
 #cardviewV7 = "28.0.0"
 
 [libraries]
@@ -21,6 +23,8 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
+fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
+#cardview-v7 = { group = "com.android.support", name = "cardview-v7", version.ref = "cardviewV7" }
 #cardview-v7 = { group = "com.android.support", name = "cardview-v7", version.ref = "cardviewV7" }
 
 [plugins]

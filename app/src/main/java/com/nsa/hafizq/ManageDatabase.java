@@ -125,6 +125,19 @@ public class ManageDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public int getTotalWordCount() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Using count(*) is the fastest way to get the total number of rows
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_NAME_WORDS, null);
+
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+        cursor.close();
+        return count;
+    }
+
     public boolean insertRowDataWords(String arabic, String bangla, int wrong, int correct){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -172,7 +185,7 @@ public class ManageDatabase extends SQLiteOpenHelper {
     // --- WORDS TABLE OPERATIONS ---
 
     /**
-     * Gets 5 words starting from a specific ID
+     * Gets 4 words starting from a specific ID
      */
     public Cursor getFourWordsFromId(int startId) {
         SQLiteDatabase db = this.getReadableDatabase();

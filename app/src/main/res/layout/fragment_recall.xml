@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/navy_dark"
+    android:orientation="vertical"
+    android:weightSum="36"
+    tools:context=".RecallFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7.5"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="76dp"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="#02081B"
+            app:cardCornerRadius="40dp"
+            app:cardElevation="10dp">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/logo" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:text="HafizQ: Quranic Word Master"
+            android:textColor="#FFCC36"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7.5"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="অবশ্যই মুমিনগণ সফল হয়েছে,  "
+            android:textColor="#F3F5FFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="যারা নিজেদের সালাতে বিনয়াবনত।  "
+            android:textColor="#F3F5FFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="আর যারা অনর্থক কথাকর্ম থেকে বিমুখ। "
+            android:textColor="#F3F5FFFF"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="15.5"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/btn_play_recall"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/play_button_bg"
+
+            android:elevation="15dp"
+            android:outlineProvider="background"
+
+            android:padding="24dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_play_large" />
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="right"
+        android:layout_marginEnd="20dp"
+        android:layout_weight="5"
+        app:cardBackgroundColor="#009688"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="8dp"
+        app:cardUseCompatPadding="true">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
+            android:backgroundTint="#009688"
+            android:gravity="center"
+            android:rotationY="0"
+            android:text="SHARE"
+            android:textColor="#F3F5FFFF"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:cornerRadius="0dp" />
+    </androidx.cardview.widget.CardView>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5" />
+
+</LinearLayout>

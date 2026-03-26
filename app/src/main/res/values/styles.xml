@@ -1,0 +1,130 @@
+<resources>
+
+    <style name="Widget.Theme.HafizQ.MyView" parent="">
+        <item name="android:background">@color/gray_400</item>
+    </style>
+    <!-- Base style (shared properties) -->
+    <style name="QuizButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="strokeWidth">5dp</item>
+    </style>
+
+<!--    &lt;!&ndash; Red &ndash;&gt;-->
+<!--    <style name="QuizButton.Red">-->
+<!--        <item name="android:backgroundTint">#2A0000</item>-->
+<!--        <item name="android:textColor">#F6BABA</item>-->
+<!--        <item name="strokeColor">#E50303</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Yellow &ndash;&gt;-->
+<!--    <style name="QuizButton.Yellow">-->
+<!--        <item name="android:backgroundTint">#2A2300</item>-->
+<!--        <item name="android:textColor">#F6EEBA</item>-->
+<!--        <item name="strokeColor">#E5B403</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Blue &ndash;&gt;-->
+<!--    <style name="QuizButton.Blue">-->
+<!--        <item name="android:backgroundTint">@color/ic_launcher_background</item>-->
+<!--        <item name="android:textColor">@color/text_color_light</item>-->
+<!--        <item name="strokeColor">@color/light_blue_600</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Green (from before) &ndash;&gt;-->
+<!--    <style name="QuizButton.Green">-->
+<!--        <item name="android:backgroundTint">#002A00</item>-->
+<!--        <item name="android:textColor">#BAF6BB</item>-->
+<!--        <item name="strokeColor">#0BE503</item>-->
+<!--    </style>-->
+
+
+
+
+    <!-- Base Card -->
+    <style name="QuizCard" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="cardCornerRadius">24dp</item>
+        <item name="cardElevation">10dp</item>
+        <item name="strokeWidth">5dp</item>
+        <item name="cardUseCompatPadding">true</item>
+    </style>
+
+    <!-- Base TextView -->
+    <style name="QuizCard.Text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">gravity</item>
+    </style>
+
+<!--    &lt;!&ndash; Blue &ndash;&gt;-->
+<!--    <style name="QuizCard.Blue">-->
+<!--        <item name="cardBackgroundColor">#0D1631</item>-->
+<!--        <item name="strokeColor">@color/light_blue_600</item>-->
+<!--    </style>-->
+<!--    <style name="QuizCard.Text.Blue">-->
+<!--        <item name="android:textColor">@color/text_color_light</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Red &ndash;&gt;-->
+<!--    <style name="QuizCard.Red">-->
+<!--        <item name="cardBackgroundColor">#1F0000</item>-->
+<!--        <item name="strokeColor">#E50303</item>-->
+<!--    </style>-->
+<!--    <style name="QuizCard.Text.Red">-->
+<!--        <item name="android:textColor">#F6BABA</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Green &ndash;&gt;-->
+<!--    <style name="QuizCard.Green">-->
+<!--        <item name="cardBackgroundColor">#001F00</item>-->
+<!--        <item name="strokeColor">#0BE503</item>-->
+<!--    </style>-->
+<!--    <style name="QuizCard.Text.Green">-->
+<!--        <item name="android:textColor">#BAF6BB</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash; Yellow &ndash;&gt;-->
+<!--    <style name="QuizCard.Yellow">-->
+<!--        <item name="cardBackgroundColor">#1F1800</item>-->
+<!--        <item name="strokeColor">#E5B403</item>-->
+<!--    </style>-->
+<!--    <style name="QuizCard.Text.Yellow">-->
+<!--        <item name="android:textColor">#F6EEBA</item>-->
+<!--    </style>-->
+
+</resources>
+<!--use-->
+<!--<Button-->
+<!--android:id="@+id/button3"-->
+<!--style="@style/QuizButton.Red"-->
+<!--android:text="صص" />-->
+
+<!--<Button-->
+<!--android:id="@+id/button6"-->
+<!--style="@style/QuizButton.Yellow"-->
+<!--android:text="صص" />-->
+
+<!--<Button-->
+<!--android:id="@+id/button2"-->
+<!--style="@style/QuizButton.Blue"-->
+<!--android:text="صص" />-->
+
+<!--<Button-->
+<!--android:id="@+id/button5"-->
+<!--style="@style/QuizButton.Green"-->
+<!--android:text="صص" />-->
+
+
+
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/navy_dark"
+    android:orientation="vertical"
+    android:weightSum="3">
+
+    <FrameLayout
+        android:id="@+id/guess_container_1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <FrameLayout
+        android:id="@+id/guess_container_2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!--        &lt;!&ndash; Blue &ndash;&gt;-->
+        <!--        <com.google.android.material.card.MaterialCardView-->
+        <!--            android:id="@+id/cardBlue"-->
+        <!--            style="@style/QuizCard.Blue">-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tvWordBlue"-->
+        <!--                style="@style/QuizCard.Text.Blue"-->
+        <!--                android:text="نافس নাফিস نافس নাফিস نافس নাফিস نافس নাফিস نافس নাফিস" />-->
+        <!--        </com.google.android.material.card.MaterialCardView>-->
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/guess_container_3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+</LinearLayout>
