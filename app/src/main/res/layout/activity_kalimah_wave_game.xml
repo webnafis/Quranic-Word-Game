@@ -77,7 +77,7 @@
                 android:gravity="center"
                 android:text="Stage 00"
                 android:textColor="@color/navy_dark"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="normal|bold" />
         </androidx.cardview.widget.CardView>
 
@@ -139,17 +139,17 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progressBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:id="@+id/progressBarWave"
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_weight="0.75"
         android:indeterminate="false"
-        android:max="10"
+        android:max="20"
         android:mirrorForRtl="false"
-        android:progress="9"
+        android:progress="0"
         android:progressBackgroundTint="@color/ic_launcher_background"
         android:progressBackgroundTintMode="src_over"
         android:progressTint="@color/gray_400"
@@ -300,7 +300,7 @@
             android:gravity="center"
             android:layoutDirection="inherit"
             android:text="NEXT"
-            android:textColor="#02081B"
+            android:textColor="@color/next_color_selector"
             android:textSize="20sp"
             android:textStyle="bold"
             app:cornerRadius="0dp" />

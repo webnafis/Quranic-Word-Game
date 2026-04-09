@@ -41,6 +41,8 @@ dependencies {
     implementation(libs.cardview)
     implementation(libs.viewpager2)
     implementation(libs.fragment)
+    implementation(libs.room.runtime)       // ← REPLACE old room lines
+    annotationProcessor(libs.room.compiler)
 //    implementation(libs.cardview.v7)
 //    implementation(libs.cardview.v7)
     testImplementation(libs.junit)

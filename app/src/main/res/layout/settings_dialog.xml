@@ -22,16 +22,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:padding="8dp">
+        android:layout_marginBottom="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Sound Effects"
+            android:text="Sound On"
             android:textColor="#DBDBDB"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
@@ -47,16 +46,42 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:padding="8dp">
+        android:layout_marginBottom="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Background Music"
+            android:text="Sound level"
             android:textColor="#DBDBDB"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <SeekBar
+            android:id="@+id/seekBarSound"
+            style="@android:style/Widget.Material.SeekBar.Discrete"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:max="100"
+            android:progress="50"
+            android:thumbTint="#DBDBDB"
+            android:tickMarkTint="#525252" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Music On"
+            android:textColor="#DBDBDB"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
@@ -68,50 +93,34 @@
             app:thumbTint="#DBDBDB"
             app:trackTint="#525252" />
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:padding="8dp">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="24dp">
 
         <TextView
-            android:id="@+id/tvLearnSoundLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="Learn Sound"
+            android:text="Music level"
             android:textColor="#DBDBDB"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-            android:layout_width="wrap_content"
+        <SeekBar
+            android:id="@+id/seekBarMusic"
+            style="@android:style/Widget.Material.SeekBar.Discrete"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            app:boxBackgroundColor="#33DBDBDB"
-            app:boxCornerRadiusBottomEnd="8dp"
-            app:boxCornerRadiusBottomStart="8dp"
-            app:boxCornerRadiusTopEnd="8dp"
-            app:boxCornerRadiusTopStart="8dp"
-            app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp"
-            app:hintEnabled="false">
+            android:max="100"
+            android:progress="50"
+            android:thumbTint="#DBDBDB"
+            android:tickMarkTint="#525252" />
 
-            <AutoCompleteTextView
-                android:id="@+id/dropdownLearnSound"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:text="Always"
-                android:textColor="#000000"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-        </com.google.android.material.textfield.TextInputLayout>
     </RelativeLayout>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCloseSettings"
         android:layout_width="match_parent"

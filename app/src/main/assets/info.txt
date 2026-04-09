@@ -1,3 +1,4 @@
+next button disable in both guess, recall
 1. add 14 extra word to finish with congratulation
 2. remove dev configuration of deleting db on create
 3.in manifest for each activity add portrait screen mode lock
@@ -44,3 +45,74 @@ The Pro Fix: Implement the modern ActivityResultContracts.RequestPermission() AP
 The Problem: The ImageButton (btn_speak) lacks a contentDescription.
 
 The Pro Fix: Production apps must be accessible to visually impaired users. Add android:contentDescription="@string/desc_play_button" to the XML so screen readers (like TalkBack) can announce what the button does.
+
+
+
+
+public class RecallGameActivity extends BaseActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recall_game);
+
+        loadSettings();
+        loadWords();
+    }
+
+    // ─── Load settings ─────────────────────────────────────────────
+    private void loadSettings() {
+        executeDB(
+            // background
+            () -> {
+                Settings settings = db.settingsDao()
+                                      .getSettings(GameName.RECALL.name());
+                // update UI
+                runOnUiThread(() -> {
+                    soundSwitch.setChecked(settings.soundOn);
+                    musicSwitch.setChecked(settings.musicOn);
+                    soundSeekBar.setProgress(settings.soundVolumn);
+                });
+            }
+        );
+    }
+
+    // ─── Load words ────────────────────────────────────────────────
+    private void loadWords() {
+        executeDB(() -> {
+            List<Word> words = db.wordDao().getAllWords();
+            runOnUiThread(() -> {
+                // set to adapter etc
+            });
+        });
+    }
+
+    // ─── Update sound when user toggles ────────────────────────────
+    private void onSoundToggled(boolean isOn) {
+        executeDB(() ->
+            db.settingsDao().updateSoundOn(GameName.RECALL.name(), isOn)
+        );
+    }
+
+    // ─── Update score ──────────────────────────────────────────────
+    private void onScoreUpdated(int newScore) {
+        executeDB(() ->
+            db.settingsDao().updateHighestRecordIfBeaten(GameName.RECALL.name(), newScore)
+        );
+    }
+
+    // ─── Word recalled by user ─────────────────────────────────────
+    private void onWordRecalled(Word word) {
+        executeDB(() -> {
+            word.recalled = true;
+            db.wordDao().updateWord(word);
+            db.settingsDao().incrementWordsFinishedByOne(GameName.RECALL.name());
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopTimer(); // ← only activity specific cleanup
+        super.onDestroy();
+    }
+}

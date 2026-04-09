@@ -10,6 +10,7 @@ constraintlayout = "2.2.1"
 cardview = "1.0.0"
 viewpager2 = "1.1.0"
 fragment = "1.8.9"
+room = "2.6.1"
 #cardviewV7 = "28.0.0"
 #cardviewV7 = "28.0.0"
 
@@ -24,6 +25,10 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
 fragment = { group = "androidx.fragment", name = "fragment", version.ref = "fragment" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }   # ← REPLACE old room lines
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" } # ← ADD THIS
+
+
 #cardview-v7 = { group = "com.android.support", name = "cardview-v7", version.ref = "cardviewV7" }
 #cardview-v7 = { group = "com.android.support", name = "cardview-v7", version.ref = "cardviewV7" }
 

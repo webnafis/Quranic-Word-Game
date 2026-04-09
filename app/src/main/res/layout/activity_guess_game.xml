@@ -77,7 +77,7 @@
                 android:gravity="center"
                 android:text="Stage 00"
                 android:textColor="@color/navy_dark"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:textStyle="normal|bold" />
         </androidx.cardview.widget.CardView>
 
@@ -139,17 +139,17 @@
     </LinearLayout>
 
     <ProgressBar
-        android:id="@+id/progressBar2"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:id="@+id/progressBar_guess"
+        style="@android:style/Widget.Holo.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_weight="0.75"
         android:indeterminate="false"
-        android:max="10"
+        android:max="20"
         android:mirrorForRtl="false"
-        android:progress="9"
+        android:progress="0"
         android:progressBackgroundTint="@color/ic_launcher_background"
         android:progressBackgroundTintMode="src_over"
         android:progressTint="@color/gray_400"
@@ -165,6 +165,7 @@
         android:weightSum="2">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/c1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -186,6 +187,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/c2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -218,6 +220,7 @@
         android:weightSum="3">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/c3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -239,6 +242,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/c4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -300,7 +304,7 @@
             android:gravity="center"
             android:layoutDirection="inherit"
             android:text="NEXT"
-            android:textColor="#02081B"
+            android:textColor="@color/next_color_selector"
             android:textSize="20sp"
             android:textStyle="bold"
             app:cornerRadius="0dp" />

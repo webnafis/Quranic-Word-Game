@@ -49,7 +49,7 @@ public class RecallGameActivity extends BaseActivity {
     private int nextSound, correctSound;
     private  int wrongSound;
     private LinkedList<WordModel> activeWords = new LinkedList<>();
-//    private MediaPlayer backgroundMusic;
+    //    private MediaPlayer backgroundMusic;
 //    private int currentScore = 0;
     private int lives = 5;
     private int timeLeft = 10; // Seconds
@@ -62,7 +62,7 @@ public class RecallGameActivity extends BaseActivity {
     private int totalDailyMission;
     private int completedDailyMission = 0;
     private int highestScore;
-//    private boolean isRecall = true;
+    //    private boolean isRecall = true;
     private int track = 0;
     private boolean isQuize = true;
     private int length = -1;
@@ -93,6 +93,7 @@ public class RecallGameActivity extends BaseActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        findViewById(R.id.next).setEnabled(false);
 
 //        backgroundMusic = MediaPlayer.create(this, R.raw.nasheed);
 //        backgroundMusic.setLooping(true);
@@ -108,7 +109,7 @@ public class RecallGameActivity extends BaseActivity {
                 .build();
 
         soundPool = new SoundPool.Builder()
-                .setMaxStreams(3) // Allow up to 3 sounds to play at the exact same time
+                .setMaxStreams(1) // Allow up to 3 sounds to play at the exact same time
                 .setAudioAttributes(attrs)
                 .build();
 
@@ -134,6 +135,7 @@ public class RecallGameActivity extends BaseActivity {
             initTTS(() -> {
                 // This ONLY runs once DB is done AND TTS is Success
                 ((TextView)findViewById(R.id.hScore)).setText("Highest score: " + highestScore);
+                findViewById(R.id.next).setEnabled(true);
                 nextQuestion();
             });
         });
@@ -302,9 +304,8 @@ public class RecallGameActivity extends BaseActivity {
 
                         // Shake the card or show a "Time's Up" message here
                         timerHandler.postDelayed(this, 1000);
-                    } else {
-                        stopTimer();
                     }
+
                 } else {
                     timerHandler.postDelayed(this, 1000);
                 }
@@ -356,6 +357,7 @@ public class RecallGameActivity extends BaseActivity {
     }
 
     private void handleGameOver() {
+        stopTimer();
         // 1. Stop interactions
         findViewById(R.id.next).setEnabled(false);
         isPaused = true; // Prevents any background timers from firing
@@ -374,7 +376,6 @@ public class RecallGameActivity extends BaseActivity {
             if (!activeWords.isEmpty()) {
                 myDB.updateLastStartingWordId(activeWords.get(0).id);
             }
-
             // 3. Show UI on Main Thread
             runOnUiThread(() -> {
                 showGameResult();
@@ -382,6 +383,7 @@ public class RecallGameActivity extends BaseActivity {
         });
     }
     private void handleGameOverForRestart() {
+//        stopTimer();
         // 1. Stop interactions
         findViewById(R.id.next).setEnabled(false);
         isPaused = true; // Prevents any background timers from firing
@@ -432,6 +434,7 @@ public class RecallGameActivity extends BaseActivity {
     }
 
     private void handleEndGame(){
+        stopTimer();
         findViewById(R.id.next).setEnabled(false);
         isPaused = true; // Prevents any background timers from firing
 
@@ -447,7 +450,7 @@ public class RecallGameActivity extends BaseActivity {
 
             // Save the last word ID so they can resume learning later
 
-                myDB.updateLastStartingWordId(1);
+            myDB.updateLastStartingWordId(1);
 
 
             // 3. Show UI on Main Thread
@@ -483,8 +486,8 @@ public class RecallGameActivity extends BaseActivity {
 
         // 2. Determine Theme
         String themeColor = "#FFD700"; // GOLD (New Record)
-            title.setText("ALHAMDULILLAH! \uD83C\uDFC6");
-            txtResultMessage.setText("Unbelievable! You've completed the MISSION!");
+        title.setText("ALHAMDULILLAH! \uD83C\uDFC6");
+        txtResultMessage.setText("Unbelievable! You've completed the MISSION!");
 
 
         // Apply Theme Colors
@@ -528,52 +531,56 @@ public class RecallGameActivity extends BaseActivity {
         if(track == 0 ){
 //            track = 0;
             isQuize = !isQuize;
+//            if(isQuize){
+//                findViewById(R.id.next).setEnabled(false);
+
+//            }
             nextLayout();
 
-        if(!isQuize){
-            databaseExecutor.execute(() -> {
-                // 1. Fetch from DB (Background Thread)
-                Cursor cursor = myDB.getNextWordAfter(activeWords.getLast().id);
+            if(!isQuize){
+                databaseExecutor.execute(() -> {
+                    // 1. Fetch from DB (Background Thread)
+                    Cursor cursor = myDB.getNextWordAfter(activeWords.getLast().id);
 
-                WordModel fetchedWord = null;
-                if (cursor != null && cursor.moveToFirst()) {
-                    fetchedWord = new WordModel(
-                            cursor.getInt(cursor.getColumnIndexOrThrow(ManageDatabase.COLUMN_1_SEL_ID)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(ManageDatabase.COLUMN_2_ARABIC)),
-                            cursor.getString(cursor.getColumnIndexOrThrow(ManageDatabase.COLUMN_3_BANGLA))
-                    );
-                    cursor.close();
-                }
+                    WordModel fetchedWord = null;
+                    if (cursor != null && cursor.moveToFirst()) {
+                        fetchedWord = new WordModel(
+                                cursor.getInt(cursor.getColumnIndexOrThrow(ManageDatabase.COLUMN_1_SEL_ID)),
+                                cursor.getString(cursor.getColumnIndexOrThrow(ManageDatabase.COLUMN_2_ARABIC)),
+                                cursor.getString(cursor.getColumnIndexOrThrow(ManageDatabase.COLUMN_3_BANGLA))
+                        );
+                        cursor.close();
+                    }
 
-                // 2. Add to LinkedList (Back on UI Thread)
-                final WordModel result = fetchedWord;
+                    // 2. Add to LinkedList (Back on UI Thread)
+                    final WordModel result = fetchedWord;
 
-                if (result != null) {
-                    // This adds the new word to the end of your LinkedList
-                    activeWords.addLast(result);
-                }else{
-                    handleEndGame();
-                }
-                // If you want to see the update immediately:
-                // nextQuestion();
+                    if (result != null) {
+                        // This adds the new word to the end of your LinkedList
+                        activeWords.addLast(result);
+                    }else{
+                        handleEndGame();
+                    }
+                    // If you want to see the update immediately:
+                    // nextQuestion();
 
-            });
-
-            if(length == 9){
-                runOnUiThread(()->{
-                    activeWords.removeFirst();
-
-                    databaseExecutor.execute(() -> {
-                        myDB.updateLastStartingWordId(activeWords.getFirst().id);
-                    });
                 });
 
-            }
+                if(length == 9){
+                    runOnUiThread(()->{
+                        activeWords.removeFirst();
 
-            if(length<9){
-                length += 1 ;
+                        databaseExecutor.execute(() -> {
+                            myDB.updateLastStartingWordId(activeWords.getFirst().id);
+                        });
+                    });
+
+                }
+
+                if(length<9){
+                    length += 1 ;
+                }
             }
-        }
 
 
 
@@ -581,6 +588,7 @@ public class RecallGameActivity extends BaseActivity {
         }
 
         if(isQuize){
+            findViewById(R.id.next).setEnabled(false);
 
             //change ui per click meaning add new quize
             FrameLayout layoutBangla1 = findViewById(R.id.containerBangla1);
@@ -659,11 +667,11 @@ public class RecallGameActivity extends BaseActivity {
             newArabic2.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
             newArabic3.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).start();
             newArabic4.animate().translationX(0f).setDuration(500).setInterpolator(new DecelerateInterpolator()).withEndAction(() -> {
-               // generateAndSpeak(activeWords.get(track).bangla, "bn", false);
+                // generateAndSpeak(activeWords.get(track).bangla, "bn", false);
                 startTimer();
             }).start();
 
-            findViewById(R.id.next).setEnabled(false);
+
 //            if (track < (int)length) {6
 //                track++;
 //            } else {
@@ -678,6 +686,7 @@ public class RecallGameActivity extends BaseActivity {
 //            }
 
         }else{
+
 //            stopTimer();
             WordModel data = activeWords.get(track);
             FrameLayout layoutBangla = findViewById(R.id.containerBangla);
@@ -704,7 +713,7 @@ public class RecallGameActivity extends BaseActivity {
             newArabic.findViewById(R.id.speak_text_card).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                     generateAndSpeak(data.arabic, "ar", false);
+                    generateAndSpeak(data.arabic, "ar", false);
                 }
             });
 
@@ -758,7 +767,7 @@ public class RecallGameActivity extends BaseActivity {
                 ((TextView)findViewById(R.id.hScore)).setText("Highest score: "+highestScore);
                 databaseExecutor.execute(() -> {
                     // Save the score if it's a new record
-                        myDB.updateHighestRecord(score);
+                    myDB.updateHighestRecord(score);
                 });
             }
 
@@ -826,10 +835,10 @@ public class RecallGameActivity extends BaseActivity {
         FrameLayout layoutRecallQuize = findViewById(R.id.recall_quize_layout);
         View newChildlayout;
         if ( !isQuize ){
-             newChildlayout = getLayoutInflater().inflate(R.layout.recall_layout, null);
+            newChildlayout = getLayoutInflater().inflate(R.layout.recall_layout, null);
 //             isRecall= !isRecall;
         }else{
-             newChildlayout = getLayoutInflater().inflate(R.layout.quize_layout, null);
+            newChildlayout = getLayoutInflater().inflate(R.layout.quize_layout, null);
 //            isRecall= !isRecall;
         }
         changeLayout(layoutRecallQuize, newChildlayout, -90f, 1000f, 600);
@@ -962,16 +971,16 @@ public class RecallGameActivity extends BaseActivity {
         // 1. Logic for Daily Task
         TextView valDaily = v.findViewById(R.id.valDaily);
         databaseExecutor.execute(() -> {
-                    int completedDaily = myDB.getDailyTargetCompletedCount();
+            int completedDaily = myDB.getDailyTargetCompletedCount();
 
-                    runOnUiThread(()->{
-                        if (completedDaily >= totalDailyMission) {
+            runOnUiThread(()->{
+                if (completedDaily >= totalDailyMission) {
 
-                            valDaily.setTextColor(Color.parseColor("#4CAF50"));
-                        }
-                        valDaily.setText(completedDaily + "/" + totalDailyMission);
-                    });
-                });
+                    valDaily.setTextColor(Color.parseColor("#4CAF50"));
+                }
+                valDaily.setText(completedDaily + "/" + totalDailyMission);
+            });
+        });
 
         // 2. Determine Theme
         String themeColor;
@@ -1056,34 +1065,7 @@ public class RecallGameActivity extends BaseActivity {
             // Add code here to pause/play your MediaPlayer
         });
 // 1. Find the Dropdown inside the dialogView
-        AutoCompleteTextView dropdown = dialogView.findViewById(R.id.dropdownLearnSound);
 
-// 2. Define your options
-        String[] options = {"Always", "New Words", "Off"};
-
-// 3. Create the Adapter (Context must be 'this' or 'RecallGameActivity.this')
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                RecallGameActivity.this,
-                android.R.layout.simple_list_item_1,
-                options
-        );
-
-// 4. Attach the adapter to the dropdown
-        dropdown.setAdapter(adapter);
-
-// 5. Set the initial text (from your database/variable)
-// For example: dropdown.setText(learnSoundMode, false);
-
-// 6. Handle the selection
-        dropdown.setOnItemClickListener((parent, view, position, id) -> {
-            String selectedMode = (String) parent.getItemAtPosition(position);
-
-            // Save to your variable/database
-            // learnSoundMode = selectedMode;
-//            databaseExecutor.execute(() -> {
-////                myDB.updateLearnSoundSetting(selectedMode);
-//            });
-        });
         dialogView.findViewById(R.id.btnCloseSettings).setOnClickListener(v -> {
             dialog.dismiss();
             isPaused = false;

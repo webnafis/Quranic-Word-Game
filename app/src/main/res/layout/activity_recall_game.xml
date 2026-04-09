@@ -282,7 +282,7 @@
             android:gravity="center"
             android:layoutDirection="inherit"
             android:text="NEXT"
-            android:textColor="#02081B"
+            android:textColor="@color/next_color_selector"
             android:textSize="20sp"
             android:textStyle="bold"
             app:cornerRadius="0dp" />

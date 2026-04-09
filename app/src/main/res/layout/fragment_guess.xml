@@ -13,7 +13,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="7.5"
+        android:layout_weight="4"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="12dp">
@@ -29,7 +29,7 @@
                 android:id="@+id/imageView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/logo" />
+                android:background="@drawable/logo"/>
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
-        android:layout_weight="7.5"
+        android:layout_weight="5"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingLeft="12dp"
@@ -83,7 +83,7 @@
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15.5"
+        android:layout_weight="23.5"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:gravity="center">
@@ -92,14 +92,14 @@
             android:id="@+id/btn_play_guess"
             android:layout_width="310dp"
             android:layout_height="150dp"
-            android:background="@android:color/transparent"
+            android:background="@drawable/guess_play_image"
 
             android:elevation="12dp"
 
-            android:outlineProvider="bounds"
+            android:outlineProvider="none"
             android:scaleType="fitCenter"
 
-            android:src="@drawable/guess_play_image" />
+            />
     </LinearLayout>
 
 
@@ -109,7 +109,7 @@
         android:layout_height="0dp"
         android:layout_gravity="right"
         android:layout_marginEnd="20dp"
-        android:layout_weight="5"
+        android:layout_weight="3"
         app:cardBackgroundColor="#004A84"
         app:cardCornerRadius="2dp"
         app:cardElevation="8dp"
@@ -117,8 +117,8 @@
 
         <Button
             android:id="@+id/button_pronounce_fragment"
-            android:layout_width="wrap_content"
-            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:backgroundTint="#004A84"
             android:gravity="center"
             android:rotationY="0"
